@@ -1,8 +1,8 @@
 # Simple Linear Regression Model - Econometry
 
-This repository originated from my econometrics classes at UFPB, part of the Data Science for Business bachelor's course. I developed this Simple Linear Regression class for training and study purposes. 
+This repository originated from my econometrics classes at UFPB, as part of the Data Science for Business bachelor's course. I developed this Simple Linear Regression class for training and study purposes.
 
-So, if there's anyone, or Antônio Vinícius, reading this, please correct me if i did anything wrong. Thank's!
+So, if anyone, especially Antônio Vinícius, is reading this, please let me know if I made any mistakes. Thanks!
 
 ### Files 
 
