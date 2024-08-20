@@ -1,6 +1,3 @@
-from pandas import read_csv, concat
-
-
 from numpy import array
 from seaborn import regplot
 from matplotlib.pyplot import scatter, show
@@ -32,9 +29,13 @@ class SimpleLinearRegression:
             return True
         return False
 
-    def show_equation(self) -> None:
+    def show_equation(self, print_equation: bool = True) -> str:
         equation = f'y = {self.b0} + {self.b1}x'
-        print(equation)
+        
+        if print_equation:
+            print(equation)
+
+        return equation
 
     def fit(self, x: List[Union[list, tuple, array]], y: List[Union[list, tuple, array]]) -> None:
         """ Trains the model """
@@ -85,7 +86,8 @@ class SimpleLinearRegression:
     def square_error(self, class_pred: List[Union[list, tuple, array]], y_real: List[Union[list, tuple, array]]) -> float:
         """Returns the square error of the prediction"""
         if (type(class_pred) != type(y_real)):
-            raise ValueError("The type of class_pred and y_real must be the same")
+            class_pred = array(class_pred)
+            y_real = array(y_real)
 
         if (len(class_pred) != len(y_real)):
             raise ValueError("The number of elements in class_pred and y_real must be the same")
@@ -95,6 +97,20 @@ class SimpleLinearRegression:
         square_error = sum(square_error_list)/size
 
         return square_error
+    
+    def mean_square_error(self, class_pred: List[Union[list, tuple, array]], y_real: List[Union[list, tuple, array]]) -> float:
+        """Returns the mean square error of the prediction"""
+        if (type(class_pred) != type(y_real)):
+            class_pred = array(class_pred)
+            y_real = array(y_real)
+
+        if (len(class_pred) != len(y_real)):
+            raise ValueError("The number of elements in class_pred and y_real must be the same")
+        
+        mean = sum(y_real)/len(y_real)
+        mean_square_error = self.square_error(class_pred, y_real)/mean
+
+        return mean_square_error
         
     def r2_score(self, predict_class, y_test) -> float:
         """Returns the accuracy of the model"""
@@ -120,22 +136,3 @@ class SimpleLinearRegression:
         regplot(x=self.x, y=self.y, line_kws={'color': 'red', 'lw': 2})
         scatter(self.x_test, self.predict_class, color='yellow')
         show()
-
-df_train = read_csv('california_housing_train.csv')
-df_test = read_csv('california_housing_test.csv')
-
-df = concat([df_test,df_train])
-
-x_train = df_train['households']
-x_test = df_test['households']
-
-y_train = df_train['total_bedrooms']
-y_test = df_test['total_bedrooms']
-
-model = SimpleLinearRegression()
-model.fit(x_train, y_train)
-class_predict = model.predict(x_train)
-print(df['households'].corr(df['total_bedrooms'])**2)
-print(model.r2_score(class_predict, y_train))
-print(model.show_equation())
-model.regression_plot()
